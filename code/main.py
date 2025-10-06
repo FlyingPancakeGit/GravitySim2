@@ -25,7 +25,7 @@ class Main:
             'velocity': None
         }
         self.can_set_body_properties = True
-        self.body_property_setting_cooldown = 300
+        self.body_property_setting_cooldown = 600
         self.last_property_setting_time = 0
 
         # input
@@ -60,21 +60,15 @@ class Main:
         return radius
 
     def display_velocity(self):
-        #mouse_pos = pygame.mouse.get_pos()
         body_pos = self.current_body_properties['pos']
-        pos_x, pos_y = pygame.mouse.get_pos()
-        draw_pos = (
-            math.sqrt(abs(pos_x)) * -1 if pos_x < 0 else math.sqrt(abs(pos_x)) * 1,
-            math.sqrt(abs(pos_y)) * -1 if pos_y < 0 else math.sqrt(abs(pos_y)) * 1
-        ) # Ensures that negative velocites are drawn both scaled down and in the correct direction.
+        end_pos = pygame.math.Vector2(body_pos) + self.get_velocity()
 
-        pygame.draw.line(self.display_surface, (220, 220, 220), body_pos, draw_pos, 3)
+        pygame.draw.line(self.display_surface, (220, 220, 220), body_pos, end_pos, 3)
 
     def get_velocity(self):
         mouse_pos = pygame.mouse.get_pos()
         body_pos = self.current_body_properties['pos']
-        displacement = pygame.math.Vector2(mouse_pos) - pygame.math.Vector2(body_pos)
-        velocity = pygame.math.Vector2(math.sqrt(displacement.x), math.sqrt(displacement.y))
+        velocity = pygame.math.Vector2(mouse_pos) - pygame.math.Vector2(body_pos)
 
         return velocity
 
@@ -98,6 +92,7 @@ class Main:
             if self.current_body_properties['mass'] is None:
                 self.current_body_properties['mass'] = 1
             elif self.current_body_properties['radius'] is None:
+                print('Setting radius...')
                 self.current_body_properties['radius'] = self.get_radius()
             elif self.current_body_properties['velocity'] is None:
                 self.current_body_properties['velocity'] = self.get_velocity()
