@@ -2,7 +2,7 @@ from settings import *
 
 
 class Body(pygame.sprite.Sprite):
-    def __init__(self, groups, pos, mass, radius, velocity, colour=BODY_COLOR):
+    def __init__(self, groups, pos, mass, radius, velocity, colour):
         # setup
         super().__init__(groups)
         self.image = pygame.Surface((radius * 2, radius * 2))
